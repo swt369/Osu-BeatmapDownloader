@@ -1,0 +1,7 @@
+    Attention:This software is only used for study,please don't use it for any other purposes.The developer will not take any responsibility for misuse.
+    Developer:swt369
+    Using steps:
+    (1) Click the "open" button,select your Osu! forder.Of course you can choose any other folders,but the software will lose its function to avoid superfluous downloads.
+    (2) Click the "start" button,the software will determine the beatmaps you already have.Then type in the pages you want(corresponding to the official beatmap download site of Osu!).Take care that if you have many beatmaps,the software may lag,please wait patienty and not take superfluous behaviour.
+    (3) wait for downloading.
+    Last but not least:please treat it softly!
