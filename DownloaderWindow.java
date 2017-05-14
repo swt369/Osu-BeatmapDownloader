@@ -18,65 +18,65 @@ import java.util.LinkedList;
 
 public class DownloaderWindow extends JFrame implements ActionListener{
 
-	//´°¿Ú×é¼ş
-	private JPanel jp; 			//Ãæ°å£¬·ÅÖÃÆô¶¯ÓëÍ£Ö¹°´Å¥,·ÅÖÃÔÚ×óÉÏ½Ç
-	private JTextArea ta; 		//ÎÄ±¾Óò£¬ÓÃÓÚÏÔÊ¾ĞÅÏ¢
-	private JScrollPane sp;		//¹ö¶¯Ãæ°å£¬ÓÃÓÚÎÄ±¾Óòta
-	private JTextField tf; 		//µ¥ĞĞÎÄ±¾£¬ÓÃÓÚÏÔÊ¾Â·¾¶
-	private JButton jb_open; 	//´ò¿ª°´Å¥£¬ÓÃÓÚÑ¡ÔñÂ·¾¶
-	private JButton jb_start; 	//¿ªÊ¼°´Å¥£¬ÓÃÓÚ¿ªÊ¼ÏÂÔØ
-	private JButton jb_stop; 	//Í£Ö¹°´Å¥£¬ÓÃÓÚÍ£Ö¹ÏÂÔØ
-	private JProgressBar jbar;  //½ø¶ÈÌõ£¬ÓÃÓÚÖ¸Ê¾ÏÂÔØ½ø¶È
+	//çª—å£ç»„ä»¶
+	private JPanel jp; 			//é¢æ¿ï¼Œæ”¾ç½®å¯åŠ¨ä¸åœæ­¢æŒ‰é’®,æ”¾ç½®åœ¨å·¦ä¸Šè§’
+	private JTextArea ta; 		//æ–‡æœ¬åŸŸï¼Œç”¨äºæ˜¾ç¤ºä¿¡æ¯
+	private JScrollPane sp;		//æ»šåŠ¨é¢æ¿ï¼Œç”¨äºæ–‡æœ¬åŸŸta
+	private JTextField tf; 		//å•è¡Œæ–‡æœ¬ï¼Œç”¨äºæ˜¾ç¤ºè·¯å¾„
+	private JButton jb_open; 	//æ‰“å¼€æŒ‰é’®ï¼Œç”¨äºé€‰æ‹©è·¯å¾„
+	private JButton jb_start; 	//å¼€å§‹æŒ‰é’®ï¼Œç”¨äºå¼€å§‹ä¸‹è½½
+	private JButton jb_stop; 	//åœæ­¢æŒ‰é’®ï¼Œç”¨äºåœæ­¢ä¸‹è½½
+	private JProgressBar jbar;  //è¿›åº¦æ¡ï¼Œç”¨äºæŒ‡ç¤ºä¸‹è½½è¿›åº¦
 	
-	//Osu!ÎÄ¼ş¼ĞÂ·¾¶
+	//Osu!æ–‡ä»¶å¤¹è·¯å¾„
 	private String pathOsu = null;
 	
-	//Osu!DownloadsÎÄ¼ş¼ĞÂ·¾¶
+	//Osu!Downloadsæ–‡ä»¶å¤¹è·¯å¾„
 	private String pathDownloads = null;
 	
-	//Osu!SongsÎÄ¼ş¼Ğ
+	//Osu!Songsæ–‡ä»¶å¤¹
 	private String pathSongs = null;
 	
-	//SongsÎÄ¼ş¼Ğ²é¿´Æ÷
+	//Songsæ–‡ä»¶å¤¹æŸ¥çœ‹å™¨
 	private CurSongs cursongs = null;
 	
-	//BeatmapId×¥È¡Æ÷
+	//BeatmapIdæŠ“å–å™¨
 	private WebPageSource wb;
 	
-	//×¥È¡Ò³
+	//æŠ“å–é¡µ
 	private int pagestart = -1;
 	private int pageend = -1;
 	
-	//ÏÂÔØÏß³Ì
+	//ä¸‹è½½çº¿ç¨‹
 	private Thread thread_download;
 	
-	//½ø¶ÈÌõÏß³Ì
+	//è¿›åº¦æ¡çº¿ç¨‹
 	private ProgressBarThread pbt;
 	private Thread thread_jbar;
 	
-	//ÒÑÏÂÔØÎÄ¼ş´óĞ¡
+	//å·²ä¸‹è½½æ–‡ä»¶å¤§å°
 	private int len = 0;
 	
-	//ÎÄ¼ş×Ü³¤
+	//æ–‡ä»¶æ€»é•¿
 	private int filelength = 0;
 	
-	//³õÊ¼»¯¸÷¸ö×é¼ş
+	//åˆå§‹åŒ–å„ä¸ªç»„ä»¶
 	private void initializeComponents(){
-		//³õÊ¼»¯¸÷¸ö°´Å¥
-		jb_open = new JButton("´ò¿ª");
+		//åˆå§‹åŒ–å„ä¸ªæŒ‰é’®
+		jb_open = new JButton("æ‰“å¼€");
 		jb_open.addActionListener(this);
-		jb_start = new JButton("¿ªÊ¼");
+		jb_start = new JButton("å¼€å§‹");
 		jb_start.addActionListener(this);
-		jb_stop = new JButton("Í£Ö¹");
+		jb_stop = new JButton("åœæ­¢");
 		jb_stop.addActionListener(this);
 		
-		//³õÊ¼»¯Ãæ°å²¢¼ÓÈë°´Å¥
+		//åˆå§‹åŒ–é¢æ¿å¹¶åŠ å…¥æŒ‰é’®
 		jp = new JPanel();
 		jp.setLayout(new GridLayout(2,1));
 		jp.add(jb_start);
 		jp.add(jb_stop);
 		
-		//³õÊ¼»¯ÎÄ±¾ÓòÓë¹ö¶¯Ãæ°å
+		//åˆå§‹åŒ–æ–‡æœ¬åŸŸä¸æ»šåŠ¨é¢æ¿
 		ta = new JTextArea(20,40);
 		ta.setEditable(false);
 		Font font = new Font(null,Font.PLAIN,15);
@@ -85,22 +85,22 @@ public class DownloaderWindow extends JFrame implements ActionListener{
 		sp.setBorder(new BevelBorder(BevelBorder.RAISED));
 		sp.setViewportView(ta);
 		
-		//³õÊ¼»¯µ¥ĞĞÎÄ±¾
-		tf = new JTextField("ÇëÑ¡ÔñOsu!ÎÄ¼ş¼ĞÂ·¾¶");
+		//åˆå§‹åŒ–å•è¡Œæ–‡æœ¬
+		tf = new JTextField("è¯·é€‰æ‹©Osu!æ–‡ä»¶å¤¹è·¯å¾„");
 		tf.setHorizontalAlignment(JTextField.CENTER);
 		
-		//³õÊ¼»¯½ø¶ÈÌõ
+		//åˆå§‹åŒ–è¿›åº¦æ¡
 		jbar = new JProgressBar();
 		jbar.setStringPainted(true);
 		jbar.setValue(0);
 	}
 	
-	//ÅÅÁĞ¸÷¸ö×é¼ş
+	//æ’åˆ—å„ä¸ªç»„ä»¶
 	private void arrangeComponents(){
-		//ÉèÖÃ²¼¾Ö·½Ê½ÎªÍø¸ñ×é·½Ê½
+		//è®¾ç½®å¸ƒå±€æ–¹å¼ä¸ºç½‘æ ¼ç»„æ–¹å¼
 		this.setLayout(new GridBagLayout());
 		
-		//ÉèÖÃÃæ°åjp
+		//è®¾ç½®é¢æ¿jp
 		final GridBagConstraints constraints_jp = new GridBagConstraints();
 		constraints_jp.gridx = 0;
 		constraints_jp.gridy = 0;
@@ -111,7 +111,7 @@ public class DownloaderWindow extends JFrame implements ActionListener{
 		constraints_jp.fill = constraints_jp.BOTH;
 		this.getContentPane().add(jp, constraints_jp);
 		
-		//ÉèÖÃ¹ö¶¯Ãæ°åsp
+		//è®¾ç½®æ»šåŠ¨é¢æ¿sp
 		final GridBagConstraints constraints_sp = new GridBagConstraints();
 		constraints_sp.gridx = 1;
 		constraints_sp.gridy = 0;
@@ -121,7 +121,7 @@ public class DownloaderWindow extends JFrame implements ActionListener{
 		constraints_sp.fill = constraints_sp.BOTH;
 		this.getContentPane().add(sp, constraints_sp);
 		
-		//ÉèÖÃ´ò¿ª°´Å¥jb_open
+		//è®¾ç½®æ‰“å¼€æŒ‰é’®jb_open
 		final GridBagConstraints constraints_jb_open = new GridBagConstraints();
 		constraints_jb_open.gridx = 0;
 		constraints_jb_open.gridy = 4;
@@ -131,7 +131,7 @@ public class DownloaderWindow extends JFrame implements ActionListener{
 		constraints_jb_open.fill = constraints_jb_open.BOTH;
 		this.getContentPane().add(jb_open, constraints_jb_open);
 		
-		//ÉèÖÃµ¥ĞĞÎÄ±¾tf
+		//è®¾ç½®å•è¡Œæ–‡æœ¬tf
 		final GridBagConstraints constraints_tf = new GridBagConstraints();
 		constraints_tf.gridx = 1;
 		constraints_tf.gridy = 4;
@@ -140,7 +140,7 @@ public class DownloaderWindow extends JFrame implements ActionListener{
 		constraints_tf.fill = constraints_tf.BOTH;
 		this.getContentPane().add(tf, constraints_tf);
 		
-		//ÉèÖÃ½ø¶ÈÌõ
+		//è®¾ç½®è¿›åº¦æ¡
 		final GridBagConstraints constraints_jbar = new GridBagConstraints();
 		constraints_jbar.gridx = 1;
 		constraints_jbar.gridy = 3;
@@ -150,30 +150,37 @@ public class DownloaderWindow extends JFrame implements ActionListener{
 		this.getContentPane().add(jbar, constraints_jbar);
 	}
 	
-	//¹¹Ôìº¯Êı
+	//æ„é€ å‡½æ•°
 	public DownloaderWindow(){
-		//³õÊ¼»¯×é¼ş
+		//åˆå§‹åŒ–ç»„ä»¶
 		initializeComponents();
-		//ÅÅÁĞ×é¼ş
+		//æ’åˆ—ç»„ä»¶
 		arrangeComponents();
-		//ÉèÖÃ´°¿ÚÎ»ÖÃÓë´°¿Ú´óĞ¡
+		//è®¾ç½®çª—å£ä½ç½®ä¸çª—å£å¤§å°
 		setBounds(Settings.ORIGINPOS_X,Settings.ORIGINPOS_Y
 				,Settings.WINDOW_WIDTH,Settings.WINDOW_HEIGHT);
-		//ÏÔÊ¾´°¿Ú
+		//æ˜¾ç¤ºçª—å£
 		setVisible(true);
-		//ÉèÖÃ±êÌâ
-		setTitle("Osu!BeatmapÏÂÔØÆ÷");
-		//ÉèÖÃ¹Ø±Õ·½Ê½
+		//è®¾ç½®æ ‡é¢˜
+		setTitle("Osu!Beatmapä¸‹è½½å™¨");
+		//è®¾ç½®å…³é—­æ–¹å¼
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		//½ûÖ¹¸Ä±ä´°¿Ú´óĞ¡
+		//ç¦æ­¢æ”¹å˜çª—å£å¤§å°
 		setResizable(false);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//´ò¿ª°´Å¥·½·¨
+		//æ‰“å¼€æŒ‰é’®æ–¹æ³•
 		if(e.getSource() == jb_open){
-			//´ò¿ª×ÊÔ´¹ÜÀíÆ÷Ñ¡ÔñOsu!ÎÄ¼ş¼Ğ
+			//åœ¨ä¸‹è½½æ—¶ç¦ç”¨è¯¥æŒ‰é’®
+			if(thread_download != null &&thread_download.isAlive()){
+				JOptionPane.showMessageDialog(null,
+						"è¯·å‹¿åœ¨ä¸‹è½½æ—¶å˜æ›´è·¯å¾„ï¼", "å‡ºé”™å•¦", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			//æ‰“å¼€èµ„æºç®¡ç†å™¨é€‰æ‹©Osu!æ–‡ä»¶å¤¹
 			JFileChooser fc=new JFileChooser();
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fc.showOpenDialog(this);
@@ -181,65 +188,65 @@ public class DownloaderWindow extends JFrame implements ActionListener{
 				return ;
 			}
 			
-			//ÉèÖÃOsu!Ä¿Â¼ÏÂSongsÎÄ¼ş¼ĞÓëDownloadsÎÄ¼ş¼ĞÂ·¾¶
+			//è®¾ç½®Osu!ç›®å½•ä¸‹Songsæ–‡ä»¶å¤¹ä¸Downloadsæ–‡ä»¶å¤¹è·¯å¾„
 			pathOsu = fc.getSelectedFile().getPath();
 			pathDownloads = new String(pathOsu+File.separatorChar+"Downloads");
 			pathSongs = new String(pathOsu+File.separatorChar+"Songs");
 			cursongs = null;
 			
-			//ÌáÊ¾
+			//æç¤º
 			SwingUtilities.invokeLater(new Runnable(){
 				@Override
 				public void run() {
 					tf.setText(pathOsu);
-					ta.append("Â·¾¶ÒÑÑ¡Ôñ\n");
+					ta.append("è·¯å¾„å·²é€‰æ‹©\n");
 				}
 			});
 		}
 		
-		//¿ªÊ¼°´Å¥·½·¨
+		//å¼€å§‹æŒ‰é’®æ–¹æ³•
 		if(e.getSource() == jb_start){
-			//Èô»¹Î´Ñ¡ÔñÂ·¾¶Ôò±¨´í
+			//è‹¥è¿˜æœªé€‰æ‹©è·¯å¾„åˆ™æŠ¥é”™
 			if(pathOsu == null){
 				JOptionPane.showMessageDialog(null,
-						"ÇëÏÈÑ¡ÔñÂ·¾¶", "³ö´íÀ²", JOptionPane.ERROR_MESSAGE);
+						"è¯·å…ˆé€‰æ‹©è·¯å¾„", "å‡ºé”™å•¦", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
-			//Æô¶¯½ø¶ÈÌõ½ø³Ì
+			//å¯åŠ¨è¿›åº¦æ¡è¿›ç¨‹
 			pbt= new ProgressBarThread(jbar);
 			thread_jbar = new Thread(pbt);
 			thread_jbar.setPriority(6);
 			thread_jbar.start();
 			
-			//³õÊ¼»¯SongÎÄ¼ş¼Ğ²é¿´Æ÷
+			//åˆå§‹åŒ–Songæ–‡ä»¶å¤¹æŸ¥çœ‹å™¨
 			if(!new File(pathSongs).exists()){
 				new File(pathSongs).mkdirs();
-				ta.append("Î´ÕÒµ½SongsÎÄ¼ş¼Ğ£¬ÒÑÔÚÄ¿Â¼ÄÚ´´½¨\n");
+				ta.append("æœªæ‰¾åˆ°Songsæ–‡ä»¶å¤¹ï¼Œå·²åœ¨ç›®å½•å†…åˆ›å»º\n");
 			}
 			if(cursongs == null){
-				appendLineTota("ÕıÔÚ²é¿´SongsÎÄ¼ş¼Ğ£¬±ÜÃâÖØ¸´ÏÂÔØ...\n");
+				appendLineTota("æ­£åœ¨æŸ¥çœ‹Songsæ–‡ä»¶å¤¹ï¼Œé¿å…é‡å¤ä¸‹è½½...\n");
 				cursongs = new CurSongs(pathSongs,pbt);
-				appendLineTota("SongsÎÄ¼ş¼Ğ²é¿´Íê±Ï£¬ÒÑÓĞ"+cursongs.getMapNum()
-				+"ÕÅBeatmap\n");
+				appendLineTota("Songsæ–‡ä»¶å¤¹æŸ¥çœ‹å®Œæ¯•ï¼Œå·²æœ‰"+cursongs.getMapNum()
+				+"å¼ Beatmap\n");
 			}
 			
-			//µ¯³ö¶Ô»°¿òÑ¡ÔñÒ³Êı
+			//å¼¹å‡ºå¯¹è¯æ¡†é€‰æ‹©é¡µæ•°
 			DialogForPageCount dialog = new DialogForPageCount(this);
 			pagestart = dialog.getPageStart();
 			pageend = dialog.getPageEnd();
 			
-			//Æô¶¯ÏÂÔØÏß³Ì
+			//å¯åŠ¨ä¸‹è½½çº¿ç¨‹
 			if(pagestart != -1 && pageend != -1){
 				thread_download = new Thread(new Runnable(){
 					@Override
 					public void run() {
 						try{
-							appendLineTota("Ñ¡¶¨×¥È¡Ò³£º"+pagestart+"~"+pageend
-									+"£¬¿ªÊ¼»ñÈ¡BeatmapIdºÅ...\n");
+							appendLineTota("é€‰å®šæŠ“å–é¡µï¼š"+pagestart+"~"+pageend
+									+"ï¼Œå¼€å§‹è·å–BeatmapIdå·...\n");
 							
 							wb = new WebPageSource(pagestart,pageend,pbt);
-							appendLineTota("BeatmapIdºÅ»ñÈ¡Íê±Ï£¬¿ªÊ¼ÏÂÔØ...\n");
+							appendLineTota("BeatmapIdå·è·å–å®Œæ¯•ï¼Œå¼€å§‹ä¸‹è½½...\n");
 							
 							LinkedList<Integer> beatmapids = wb.getIds();
 							int curnum = 0;
@@ -248,30 +255,30 @@ public class DownloaderWindow extends JFrame implements ActionListener{
 								int curid = beatmapids.get(curnum++);
 								
 								if(cursongs.isExist(curid)){
-									appendLineTota("Beatmap"+curid+"ÒÑ´æÔÚ\n");
+									appendLineTota("Beatmap"+curid+"å·²å­˜åœ¨\n");
 									continue;
 								}
-								appendLineTota("ÕıÔÚÏÂÔØBeatmap"+curid+"\n");
+								appendLineTota("æ­£åœ¨ä¸‹è½½Beatmap"+curid+"\n");
 								
 								System.out.println(Settings.GetURL(curid)); 
 								File beatmapfile = downloadFile
 										(Settings.GetURL(curid),curid);
 								if(beatmapfile.exists()){
-									appendLineTota("Beatmap"+curid+"ÏÂÔØÍê±Ï\n");
+									appendLineTota("Beatmap"+curid+"ä¸‹è½½å®Œæ¯•\n");
 									downloadcount++;
 								}else{
-									appendLineTota("Beatmap"+curid+"ÏÂÔØÊ§°Ü\n");
+									appendLineTota("Beatmap"+curid+"ä¸‹è½½å¤±è´¥\n");
 								}
 							}
 							
-							appendLineTota("ËùÓĞBeatmapÏÂÔØÍê±Ï£¬¹²ÏÂÔØÁË"
-							+downloadcount+"ÕÅÍ¼\n");
-							appendLineTota("¸ĞĞ»ÄúµÄÊ¹ÓÃ£¡\n");
+							appendLineTota("æ‰€æœ‰Beatmapä¸‹è½½å®Œæ¯•ï¼Œå…±ä¸‹è½½äº†"
+							+downloadcount+"å¼ å›¾\n");
+							appendLineTota("æ„Ÿè°¢æ‚¨çš„ä½¿ç”¨ï¼\n");
 							pbt.stopThread();
 						
 						}catch(Exception e){
 							e.printStackTrace();
-							appendLineTota("ÏÂÔØÒÑÍ£Ö¹\n");
+							appendLineTota("ä¸‹è½½å·²åœæ­¢\n");
 						}
 					}
 				});
@@ -281,11 +288,11 @@ public class DownloaderWindow extends JFrame implements ActionListener{
 			}
 		}
 		
-		//Í£Ö¹°´Å¥·½·¨
+		//åœæ­¢æŒ‰é’®æ–¹æ³•
 		if(e.getSource() == jb_stop){
 			if(thread_download != null &&thread_download.isAlive()){
 				thread_download.stop();
-				appendLineTota("ÏÂÔØÒÑÍ£Ö¹\n");
+				appendLineTota("ä¸‹è½½å·²åœæ­¢\n");
 			}
 			if(pbt != null){
 				pbt.stopThread();
@@ -293,35 +300,35 @@ public class DownloaderWindow extends JFrame implements ActionListener{
 		}
 	}
 	
-	//¸ù¾İÖ¸¶¨URLÏÂÔØÎÄ¼şÖÁdownloadÎÄ¼ş¼Ğ
+	//æ ¹æ®æŒ‡å®šURLä¸‹è½½æ–‡ä»¶è‡³downloadæ–‡ä»¶å¤¹
 	private File downloadFile(String urlpath,int id){
 		File file = null;
-		//ÎÄ¼şÃû,À©Õ¹ÃûÎª.osz
+		//æ–‡ä»¶å,æ‰©å±•åä¸º.osz
 		String filename = Integer.toString(id);
 		file = new File(pathOsu+File.separatorChar+"Downloads"
 		+File.separatorChar+filename+".osz");
-		//ÈôÎ´ÕÒµ½DownloadsÎÄ¼ş¼ĞÔò×Ô¶¯´´½¨
+		//è‹¥æœªæ‰¾åˆ°Downloadsæ–‡ä»¶å¤¹åˆ™è‡ªåŠ¨åˆ›å»º
 		if(!file.getParentFile().exists()){
-			ta.append("Î´ÕÒµ½DownloadsÎÄ¼ş¼Ğ£¬ÒÑÔÚÄ¿Â¼ÄÚ´´½¨\n");
+			ta.append("æœªæ‰¾åˆ°Downloadsæ–‡ä»¶å¤¹ï¼Œå·²åœ¨ç›®å½•å†…åˆ›å»º\n");
 			file.getParentFile().mkdirs();
 		}
 		try{
-			// Í³Ò»×ÊÔ´
+			// ç»Ÿä¸€èµ„æº
 			URL url = new URL(urlpath);
-			// httpµÄÁ¬½ÓÀà
+			// httpçš„è¿æ¥ç±»
 			HttpURLConnection urlconnection = (HttpURLConnection)
 					url.openConnection();
-			//ÉèÖÃ·ÃÎÊ·½Ê½
+			//è®¾ç½®è®¿é—®æ–¹å¼
 			urlconnection.setRequestMethod("POST");
-			//ÉèÖÃ×Ö·û±àÂë
+			//è®¾ç½®å­—ç¬¦ç¼–ç 
 			urlconnection.setRequestProperty("Charset", "UTF-8");
 			int responsecode = urlconnection.getResponseCode();
-			//200´ú±í³É¹¦Á¬½Ó
+			//200ä»£è¡¨æˆåŠŸè¿æ¥
 			if(responsecode == 200){
-				//ÊäÈëÁ÷
+				//è¾“å…¥æµ
 				BufferedInputStream bin = 
 						new BufferedInputStream(urlconnection.getInputStream());
-				//ÎÄ¼ş´óĞ¡
+				//æ–‡ä»¶å¤§å°
 				filelength = urlconnection.getContentLength();
 				System.out.println(filelength);
 				OutputStream out = new FileOutputStream(file);
@@ -329,7 +336,7 @@ public class DownloaderWindow extends JFrame implements ActionListener{
 				len = 0;
 				byte[] buf = new byte[1024];
 				
-				//¿ªÊ¼ÏÂÔØ
+				//å¼€å§‹ä¸‹è½½
 				while((size = bin.read(buf)) != -1){
 					len += size;
 					out.write(buf,0,size);
@@ -345,7 +352,7 @@ public class DownloaderWindow extends JFrame implements ActionListener{
 		return file;
 	}
 	
-	//ÀûÓÃEDTÏòtaÖĞÌí¼ÓÎÄ±¾
+	//åˆ©ç”¨EDTå‘taä¸­æ·»åŠ æ–‡æœ¬
 	private void appendLineTota(String line){
 		SwingUtilities.invokeLater(new Runnable(){
 			@Override
@@ -362,7 +369,7 @@ public class DownloaderWindow extends JFrame implements ActionListener{
 		});
 	}
 	
-	//²âÊÔÓÃ
+	//æµ‹è¯•ç”¨
 	public static void main(String[] args) {
 		
 	}
